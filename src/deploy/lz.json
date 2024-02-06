@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enterpriseScaleCompanyPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide a prefix (unique at tenant-scope) for the Management Group hierarchy and other resources created as part of CAF."
+            }
+        },
+        "currentDateTimeUtcNow": {
+            "type": "string",
+            "defaultValue": "[utcNow()]",
+            "metadata": {
+                "description": "The current date and time using the utcNow function. Used for deployment name uniqueness"
+            }
+        },
+        "policyAssignmentParametersCommon": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "platformManagementGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the name of the Management Group that will be used to host the platform resources."
+            }
+        }
+    },
+    "variables": {
+        "deploymentUris": {
+             "policyDefinitionsCAFM": "[uri(deployment().properties.templateLink.uri, 'policyDefinitions/policies.json')]"
+        },
+        "deploymentSuffix": "[concat('-', deployment().location, '-', guid(parameters('enterpriseScaleCompanyPrefix'), parameters('currentDateTimeUtcNow')))]",
+        "deploymentNames": {
+             "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
+             "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]"
+        }
+    },
+    "resources": [
+        {
+            // Deploying CAFM custom policies. 
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMPolicyDeploymentName]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'))]",
+            "dependsOn": [],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').policyDefinitionsCAFM]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "deployment": {
+            "type": "string",
+            "value": "[concat(deployment().name, ' has successfully deployed.')]"
+        }
+    }
+}

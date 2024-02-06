@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "enterpriseScaleCompanyPrefix": {
+            "value": "nx"
+        },
+        "platformManagementGroup": {
+            "value": "nx-platform"
+        },
+        "policyAssignmentParametersCommon": {
+            "value": {
+                "ALZMonitorResourceGroupName": {
+                    "value": "nx-eus2-monitoring-rg"
+                },
+                "ALZMonitorResourceGroupTags": {
+                    "value": {
+                        "Project": "caf-monitoring"
+                    }
+                },
+                "ALZMonitorResourceGroupLocation": {
+                    "value": "eastus2"
+                }
+            }
+        }
+    }
+}
