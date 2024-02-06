@@ -1,6 +1,6 @@
 variables:
   location: "eastus2"
-  ManagementGroupPrefix: "nx"
+  ManagementGroupPrefix: "alz"
   serviceConnectionName: "nx-devops-mgmt"
 
 pool:
@@ -14,4 +14,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az deployment mg create --template-file src/deploy/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz.param.json
+        az deployment mg create --template-uri https://raw.githubusercontent.com/midwilshire/caf-monitoring/main/src/deploy/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz.param.json

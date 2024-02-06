@@ -24,12 +24,18 @@
             "metadata": {
                 "description": "Provide the name of the Management Group that will be used to host the platform resources."
             }
-        }
+        },
+        "delayCount": {
+            "type": "int",
+            "defaultValue": 1,
+            "minValue": 1,
+            "maxValue": 60,
+            "metadata": {
+                "description": "Configure the count of empty deployments used to introduce a delay after policy deployment. Used to increase reliability of deployment, but can be reduced when re-deploying to an existing environment."
+            }
+        },
     },
     "variables": {
-        "deploymentUris": {
-             "policyDefinitionsCAFM": "[uri(deployment().properties.templateLink.uri, 'policyDefinitions/policies.json')]"
-        },
         "deploymentSuffix": "[concat('-', deployment().location, '-', guid(parameters('enterpriseScaleCompanyPrefix'), parameters('currentDateTimeUtcNow')))]",
         "deploymentNames": {
              "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
@@ -49,12 +55,39 @@
                 "mode": "Incremental",
                 "templateLink": {
                     "contentVersion": "1.0.0.0",
-                    "uri": "[variables('deploymentUris').policyDefinitionsCAFM]"
+                    "uri": "[uri(deployment().properties.templateLink.uri,'policyDefinitions/policies.json')]"
+
                 },
                 "parameters": {
                     "topLevelManagementGroupPrefix": {
                         "value": "[parameters('enterpriseScaleCompanyPrefix')]"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[concat('ambaPreparingToLaunch', copyIndex())]",
+            "location": "[deployment().location]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'))]",
+            "dependsOn": [
+                "[variables('deploymentNames').AMBAPolicyDeploymentName]"
+            ],
+            "copy": {
+                "batchSize": 1,
+                "count": "[parameters('delayCount')]",
+                "mode": "Serial",
+                "name": "ambaPolicyCompletion"
+            },
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "resources": [],
+                    "outputs": {}
                 }
             }
         }
