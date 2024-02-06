@@ -14,9 +14,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        ls -la
-        cd src
-        ls -la
-        cd deploy
-        ls -la
-        az deployment mg create --template-uri src/deploy/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz.param.json
+        az deployment mg create --template-file src/deploy/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz.param.json
