@@ -25,6 +25,67 @@
                 "description": "Provide the name of the Management Group that will be used to host the platform resources."
             }
         },
+        "connectivityManagementGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the name of the Management Group that will be used to host the connectivity resources."
+            }
+        },
+        "enableCAFMConnectivity": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Assign Connectivity initiative"
+            }
+        },
+        "enableCAFMIdentity": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Assign Identity initiative"
+            }
+        },
+        "enableCAFMLandingZone": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Assign Landing zone initiative"
+            }
+        },
+        "enableCAFMManagement": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Assign Management initiative"
+            }
+        },
+        "enableCAFMServiceHealth": {
+            "type": "string",
+            "defaultValue": "Yes",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ],
+            "metadata": {
+                "description": "Assign Service health initiative"
+            }
+        },
         "delayCount": {
             "type": "int",
             "defaultValue": 1,
@@ -34,12 +95,22 @@
                 "description": "Configure the count of empty deployments used to introduce a delay after policy deployment. Used to increase reliability of deployment, but can be reduced when re-deploying to an existing environment."
             }
         },
+        "policyAssignmentParametersConnectivity": {
+            "type": "object",
+            "defaultValue": {}
+        }
     },
     "variables": {
+         // Declaring the policy assignment parameters that will be used for all policy assignments
+        "policyAssignmentParametersConnectivity": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersConnectivity'))]",
         "deploymentSuffix": "[concat('-', deployment().location, '-', guid(parameters('enterpriseScaleCompanyPrefix'), parameters('currentDateTimeUtcNow')))]",
+        "deploymentUris": {
+            "policyDefinitionsCAFM": "[uri(deployment().properties.templateLink.uri, 'policyDefinitions/policies.json')]",
+            "CAFMConnectivityInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ConnectivityAssignment.json')]"
+        },
         "deploymentNames": {
-             "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
-             "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]"
+            "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
+            "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]"
         }
     },
     "resources": [
@@ -68,17 +139,17 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "[concat('ambaPreparingToLaunch', copyIndex())]",
+            "name": "[concat('cafmPreparingToLaunch', copyIndex())]",
             "location": "[deployment().location]",
             "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'))]",
             "dependsOn": [
-                "[variables('deploymentNames').AMBAPolicyDeploymentName]"
+                "[variables('deploymentNames').CAFMPolicyDeploymentName]"
             ],
             "copy": {
                 "batchSize": 1,
                 "count": "[parameters('delayCount')]",
                 "mode": "Serial",
-                "name": "ambaPolicyCompletion"
+                "name": "cafmPolicyCompletion"
             },
             "properties": {
                 "mode": "Incremental",
@@ -88,6 +159,33 @@
                     "parameters": {},
                     "resources": [],
                     "outputs": {}
+                }
+            }
+        },
+        {
+            // Assigning CAFM Connectivity PolicySet to the connectivity management group if condition is true
+            "condition": "[equals(parameters('enableCAFMConnectivity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMConnectivityDeploymentName]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('connectivityManagementGroup'))]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "cafmPolicyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').CAFMConnectivityInitiative]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "policyAssignmentParameters": {
+                        "value": "[variables('policyAssignmentParametersConnectivity')]"
+                    }
                 }
             }
         }
