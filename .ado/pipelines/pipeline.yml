@@ -1,6 +1,6 @@
 variables:
   location: "eastus2"
-  ManagementGroupPrefix: "JR"
+  ManagementGroupPrefix: "nx"
   serviceConnectionName: "nx-devops-mgmt"
 
 pool:
