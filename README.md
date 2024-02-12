@@ -36,3 +36,4 @@ Service and resource health events are written into the activity log. This means
 
 Alert Processing Rules enable the filtering of alerts and assign alerts to the appropriate action groups based on filter criteria. A  single Action Group per subscription, and deploy a single Alert Processing Rule without filters to action alerts via the Action Group. This may be revised in the future.
 
+bicep build ./src/deploy/lz/templates/policies.bicep --outfile ./src/deploy/lz/policyDefinitions/policies.json
