@@ -41,7 +41,7 @@
         },
         "rbacContributor": "b24988ac-6180-42a0-ab88-20f7382dd24c",
         "roleAssignmentNames": {
-            "deployCAFMServiceHealth": "[guid(concat(parameters('topLevelManagementGroupPrefix'), variables('policyAssignmentNames').ambaServiceHealth))]"
+            "deployCAFMServiceHealth": "[guid(concat(parameters('topLevelManagementGroupPrefix'), variables('policyAssignmentNames').cafmServiceHealth))]"
         }
     },
     "resources": [
@@ -79,7 +79,7 @@
             "properties": {
                 "principalType": "ServicePrincipal",
                 "roleDefinitionId": "[concat('/providers/Microsoft.Authorization/roleDefinitions/', variables('rbacContributor'))]",
-                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').ambaServiceHealth), '2019-09-01', 'Full' ).identity.principalId)]",
+                "principalId": "[toLower(reference(concat('/providers/Microsoft.Authorization/policyAssignments/', variables('policyAssignmentNames').cafmServiceHealth), '2019-09-01', 'Full' ).identity.principalId)]",
                 "description": "_deployed_by_cafm"
             }
         }
