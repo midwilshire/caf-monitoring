@@ -19,6 +19,10 @@
             "type": "object",
             "defaultValue": {}
         },
+        "policyAssignmentParametersServiceHealth": {
+            "type": "object",
+            "defaultValue": {}
+        },
         "platformManagementGroup": {
             "type": "string",
             "metadata": {
@@ -33,7 +37,7 @@
         },
         "enableCAFMConnectivity": {
             "type": "string",
-            "defaultValue": "Yes",
+            "defaultValue": "No",
             "allowedValues": [
                 "Yes",
                 "No"
@@ -103,14 +107,17 @@
     "variables": {
          // Declaring the policy assignment parameters that will be used for all policy assignments
         "policyAssignmentParametersConnectivity": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersConnectivity'))]",
+        "policyAssignmentParametersServiceHealth": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersServiceHealth'))]",
         "deploymentSuffix": "[concat('-', deployment().location, '-', guid(parameters('enterpriseScaleCompanyPrefix'), parameters('currentDateTimeUtcNow')))]",
         "deploymentUris": {
             "policyDefinitionsCAFM": "[uri(deployment().properties.templateLink.uri, 'policyDefinitions/policies.json')]",
-            "CAFMConnectivityInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ConnectivityAssignment.json')]"
+            "CAFMConnectivityInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ConnectivityAssignment.json')]",
+            "CAFMServiceHealthInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ServiceHealthAssignment.json')]"
         },
         "deploymentNames": {
             "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
-            "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]"
+            "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]",
+            "CAFMServiceHealthDeploymentName": "[take(concat('cafm-ServiceHealth', variables('deploymentSuffix')), 64)]"
         }
     },
     "resources": [
@@ -185,6 +192,33 @@
                     },
                     "policyAssignmentParameters": {
                         "value": "[variables('policyAssignmentParametersConnectivity')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning CAFM service health PolicySet to the service health management group if condition is true
+            "condition": "[equals(parameters('enableCAFMServiceHealth'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMServiceHealthDeploymentName]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'))]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "cafmPolicyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').CAFMServiceHealthInitiative]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "policyAssignmentParameters": {
+                        "value": "[variables('policyAssignmentParametersServiceHealth')]"
                     }
                 }
             }
