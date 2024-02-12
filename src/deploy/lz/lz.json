@@ -37,7 +37,7 @@
         },
         "enableCAFMConnectivity": {
             "type": "string",
-            "defaultValue": "No",
+            "defaultValue": "Yes",
             "allowedValues": [
                 "Yes",
                 "No"
