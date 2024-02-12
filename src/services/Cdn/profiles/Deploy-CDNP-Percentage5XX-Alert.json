@@ -10,11 +10,10 @@
     "metadata": {
       "version": "1.0.1",
       "category": "Networking",
-      "source": "https://github.com/Azure/azure-monitor-baseline-alerts/",
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "severity": {
@@ -195,7 +194,7 @@
                     "name": "[[concat(parameters('resourceName'), '-Percentage5XXAlert')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for Frontdoor CDN Origin Latency",

@@ -10,11 +10,10 @@
     "metadata": {
       "version": "1.0.0",
       "category": "Monitoring",
-      "source": "https://github.com/Azure/azure-monitor-baseline-alerts/",
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "enabled": {
@@ -35,7 +34,7 @@
           "displayName": "Resource Group Name",
           "description": "Resource group the alert is placed in"
         },
-        "defaultValue": "rg-amba-monitoring-001"
+        "defaultValue": "rg-cafm-monitoring-001"
       },
       "alertResourceGroupTags": {
         "type": "Object",
@@ -44,7 +43,7 @@
           "description": "Tags on the Resource group the alert is placed in"
         },
         "defaultValue": {
-          "_deployed_by_amba": true
+          "_deployed_by_cafm": true
         }
       },
       "alertResourceGroupLocation": {
@@ -201,7 +200,7 @@
                             "name": "Activity Log Storage Account Delete",
                             "location": "global",
                             "tags": {
-                              "_deployed_by_amba": true
+                              "_deployed_by_cafm": true
                             },
                             "properties": {
                               "description": "Activity Log Storage Account Delete",

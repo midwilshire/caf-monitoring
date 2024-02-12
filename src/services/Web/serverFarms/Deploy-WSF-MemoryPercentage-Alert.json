@@ -10,7 +10,6 @@
     "metadata": {
       "version": "1.0.1",
       "Category": "Web Services",
-      "source": "https://github.com/Azure/azure-monitor-baseline-alerts/",
       "_deployed_by_cafm": "True"
     },
     "parameters": {
@@ -182,7 +181,7 @@
                     "name": "[[concat(parameters('resourceName'), '-MemoryPercentage')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for App Service Plan Memory Percentage",
