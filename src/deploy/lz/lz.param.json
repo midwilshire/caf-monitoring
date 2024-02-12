@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "enterpriseScaleCompanyPrefix": {
-            "value": "JR"
+            "value": "nx"
         },
         "platformManagementGroup": {
             "value": "platform"
