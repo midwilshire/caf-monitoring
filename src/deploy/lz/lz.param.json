@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "enterpriseScaleCompanyPrefix": {
-            "value": "alz"
+            "value": "JR"
         },
         "platformManagementGroup": {
-            "value": "alz-platform"
+            "value": "platform"
         },
         "connectivityManagementGroup": {
-            "value": "alz-connectivity"
+            "value": "connectivity"
         },
         "enableCAFMConnectivity": {
             "value": "Yes"
