@@ -17,6 +17,8 @@ steps:
       templateLocation: 'Linked artifact'
       csmFile: 'src/deploy/lz/lz.json'
       csmParametersFile: 'src/deploy/lz/lz.param.json'
-      overrideParameters: '--management-group-id $(ManagementGroupPrefix) --location $(location)'
       deploymentMode: 'Incremental'
+      overrideParameters: >
+       -management-group-id $(ManagementGroupPrefix) 
+       -location $(location)
   
