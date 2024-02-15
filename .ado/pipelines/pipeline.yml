@@ -9,13 +9,15 @@ pool:
   vmImage: windows-latest
 
 steps:
-  - task: AzureFileCopy@5
+  - task: AzureFileCopy@3
     inputs:
       SourcePath: 'src/deploy/lz'
       azureSubscription: 'nx-devops'
       Destination: 'AzureBlob'
       storage: 'staarm'
       ContainerName: 'monitoring-buildartifacts'
+      outputStorageUri: 'artifactsLocation'
+      outputStorageContainerSasToken: 'artifactsLocationSasToken'
         
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
