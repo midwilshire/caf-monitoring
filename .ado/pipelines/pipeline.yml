@@ -6,7 +6,7 @@ variables:
   serviceConnectionName: "nx-devops-mgmt"
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
 steps:
   - task: AzureFileCopy@3
