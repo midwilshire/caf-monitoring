@@ -18,7 +18,4 @@ steps:
       csmFile: 'src/deploy/lz/lz.json'
       csmParametersFile: 'src/deploy/lz/lz.param.json'
       deploymentMode: 'Incremental'
-      overrideParameters: >
-       -management-group-id $(ManagementGroupPrefix) 
-       -location $(location)
   
