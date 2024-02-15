@@ -9,6 +9,16 @@ pool:
   vmImage: windows-latest
 
 steps:
+
+  - task: AzureCLI@2
+    displayName: "Deploy CAF Monitoring ARM template"
+    inputs:
+      azureSubscription: ${{ variables['serviceConnectionName'] }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment mg create --template-uri "https://staarm.blob.core.windows.net/monitoring-buildartifacts/lz.json" --location eastus2 --management-group-id Examworkq --parameters src/deploy/lz/lz.param.json --query-string "sp=r&st=2024-02-08T17:26:33Z&se=2024-02-23T01:26:33Z&spr=https&sv=2022-11-02&sr=c&sig=n6lWRZ77veZM%2Fjo4sseXqtntyjSPaobXNYAGHeOk9js%3D"
+          
   - task: AzureFileCopy@3
     inputs:
       SourcePath: 'src/deploy/lz'
