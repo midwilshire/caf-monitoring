@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "enterpriseScaleCompanyPrefix": {
-            "value": "nx"
+            "value": "Examworks"
         },
         "platformManagementGroup": {
-            "value": "platform"
+            "value": "lz-platform"
         },
         "connectivityManagementGroup": {
-            "value": "connectivity"
+            "value": "lz-connectivity"
         },
         "enableCAFMConnectivity": {
             "value": "Yes"
@@ -29,7 +29,7 @@
         "policyAssignmentParametersCommon": {
             "value": {
                 "ALZMonitorResourceGroupName": {
-                    "value": "nx-eus2-monitoring-rg"
+                    "value": "nx-monitoring-rg"
                 },
                 "ALZMonitorResourceGroupTags": {
                     "value": {

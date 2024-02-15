@@ -1,6 +1,8 @@
+trigger: none
+
 variables:
   location: "eastus2"
-  ManagementGroupPrefix: "nx"
+  ManagementGroupPrefix: "Examworks"
   serviceConnectionName: "nx-devops-mgmt"
 
 pool:
