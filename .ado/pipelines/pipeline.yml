@@ -16,8 +16,8 @@ steps:
       Destination: 'AzureBlob'
       storage: 'staarm'
       ContainerName: 'monitoring-buildartifacts'
-      outputStorageUri: artifactsLocation
-      outputStorageContainerSasToken: artifactsLocationSasToken
+      outputStorageUri: 'artifactsLocation'
+      outputStorageContainerSasToken: 'artifactsLocationSasToken'
         
   - task: AzureResourceManagerTemplateDeployment@3
     inputs:
