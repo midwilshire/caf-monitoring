@@ -34,6 +34,7 @@ steps:
     condition: always()
     inputs:
       azureSubscription: 'nx-devops'
-      scriptType: ps
+      scriptType: bash
       scriptLocation: inlineScript
-      inlineScript: Get-AzureStorageBlob -Container 'monitoring-buildartifacts' -Context 'staarm' | Remove-AzureStorageBlob
+      inlineScript: |
+        az storage blob delete-batch --source 'monitoring-buildartifacts' --account-name 'staarm' --pattern '*.*'
