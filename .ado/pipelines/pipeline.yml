@@ -26,4 +26,4 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az deployment mg create --template-uri $(artifactsLocation)/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz/lz.param.json
+        az deployment mg create --template-uri $(artifactsLocation)lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz/lz.param.json
