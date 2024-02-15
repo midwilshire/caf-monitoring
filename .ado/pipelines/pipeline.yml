@@ -19,13 +19,11 @@ steps:
       outputStorageUri: 'artifactsLocation'
       outputStorageContainerSasToken: 'artifactsLocationSasToken'
         
-  - task: AzureResourceManagerTemplateDeployment@3
+  - task: AzureCLI@2
+    displayName: "Deploy CAF Monitoring ARM template"
     inputs:
-      deploymentScope: 'Management Group'
-      azureResourceManagerConnection: 'nx-devops-mgmt'
-      location: 'East US 2'
-      templateLocation: 'Linked artifact'
-      csmFile: 'src/deploy/lz/lz.json'
-      csmParametersFile: 'src/deploy/lz/lz.param.json'
-      deploymentMode: 'Incremental'
-  
+      azureSubscription: ${{ variables['serviceConnectionName'] }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment mg create --template-uri $(artifactsLocation)/lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz/lz.param.json
