@@ -8,24 +8,14 @@ variables:
 pool:
   vmImage: windows-latest
 
-steps:
-
-  - task: AzureCLI@2
-    displayName: "Deploy CAF Monitoring ARM template"
-    inputs:
-      azureSubscription: ${{ variables['serviceConnectionName'] }}
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az deployment mg create --template-uri "https://staarm.blob.core.windows.net/monitoring-buildartifacts/lz.json" --location eastus2 --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz/lz.param.json
-          
+steps:         
   - task: AzureFileCopy@3
     inputs:
       SourcePath: 'src/deploy/lz'
       azureSubscription: 'nx-devops'
       Destination: 'AzureBlob'
       storage: 'staarm'
-      ContainerName: 'buildartifacts'
+      ContainerName: 'monitoring-buildartifacts'
       outputStorageUri: 'artifactsLocation'
       outputStorageContainerSasToken: 'artifactsLocationSasToken'
       sasTokenTimeOutInMinutes: '10'
@@ -37,9 +27,13 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az deployment mg create  \
-        --management-group-id $(ManagementGroupPrefix) \
-        --template-uri $(artifactsLocation)lz.json \
-        --query-string $(artifactsLocationSasToken) \
-        --location $(location) \
-        --parameters src/deploy/lz/lz.param.json 
+        az deployment mg create --template-uri $(artifactsLocation)lz.json --location $(location) --management-group-id $(ManagementGroupPrefix) --parameters src/deploy/lz/lz.param.json
+
+  - task: AzureCLI@2
+    displayName: Remove Artifacts from Storage Account
+    condition: always()
+    inputs:
+      azureSubscription: 'nx-devops'
+      scriptType: ps
+      scriptLocation: inlineScript
+      inlineScript: Get-AzureStorageBlob -Container 'monitoring-buildartifacts' -Context 'staarm' | Remove-AzureStorageBlob
