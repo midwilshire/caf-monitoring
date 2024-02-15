@@ -18,7 +18,16 @@ steps:
       ContainerName: 'monitoring-buildartifacts'
       outputStorageUri: 'artifactsLocation'
       outputStorageContainerSasToken: 'artifactsLocationSasToken'
-        
+
+  - task: CmdLine@2
+    inputs:
+      script: |
+        echo Write your commands here
+        echo $artifactsLocationSasToken
+        echo $(artifactsLocationSasToken)
+        echo $artifactsLocation
+        echo $(artifactsLocation)
+        echo Hello world
   - task: AzureCLI@2
     displayName: "Deploy CAF Monitoring ARM template"
     inputs:
