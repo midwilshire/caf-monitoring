@@ -19,11 +19,11 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)\caf-monitoring
 
   - script: |
-      # git checkout -b main
+      git checkout -b main
       echo 'This is a test' > data.txt
-      # git add -A
-      # git commit -m "deployment $(Build.BuildNumber)"
-      # git push --set-upstream origin main 
+      git add -A
+      git commit -m "deployment $(Build.BuildNumber)"
+      git push --set-upstream origin main 
     displayName: Add data.txt file
     workingDirectory: $(System.DefaultWorkingDirectory)\caf-monitoring
 
