@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "ALZMonitorResourceGroupName": {
@@ -87,7 +87,7 @@
             "allOf": [
               {
                 "field": "Microsoft.AlertsManagement/actionRules/description",
-                "equals": "AMBA Alert Processing Rule for Subscription"
+                "equals": "CAFM Alert Processing Rule for Subscription"
               }
             ]
           },
@@ -149,13 +149,13 @@
                             {
                                 "type": "Microsoft.Insights/actionGroups",
                                 "apiVersion": "2022-06-01",
-                                "name": "AmbaActionGr",
+                                "name": "CAFMActionGr",
                                 "location": "Global",
                                 "tags": {
-                                    "_deployed_by_amba": true
+                                    "_deployed_by_cafm": true
                                   },
                                 "properties": {
-                                    "groupShortName": "AmbaActionGr",
+                                    "groupShortName": "CAFMActionGr",
                                     "enabled": true,
                                     "copy": [
                                         {
@@ -174,24 +174,24 @@
                             {
                                 "type": "Microsoft.AlertsManagement/actionRules",
                                 "apiVersion": "2021-08-08",
-                                "name": "AMBA Alert Processing Rule",
+                                "name": "CAFM Alert Processing Rule",
                                 "location": "Global",
                                 "dependsOn": [
-                                    "Microsoft.Insights/actionGroups/AmbaActionGr"
+                                    "Microsoft.Insights/actionGroups/CAFMActionGr"
                                 ],
                                 "tags": {
-                                    "_deployed_by_amba": true
+                                    "_deployed_by_cafm": true
                                 },
                                 "properties": {
                                     "scopes": [
                                         "[[subscription().Id]"
                                     ],
-                                    "description": "AMBA Alert Processing Rule for Subscription",
+                                    "description": "CAFM Alert Processing Rule for Subscription",
                                     "enabled": true,
                                     "actions": [
                                         {
                                         "actiongroupIds": [
-                                            "[[[concat(subscription().Id, '/resourceGroups/', parameters('ALZMonitorResourceGroupName'), '/providers/Microsoft.Insights/actionGroups/AmbaActionGr')]"
+                                            "[[[concat(subscription().Id, '/resourceGroups/', parameters('ALZMonitorResourceGroupName'), '/providers/Microsoft.Insights/actionGroups/CAFMActionGr')]"
                                         ],
                                         "actionType": "AddActionGroups"
                                         }
