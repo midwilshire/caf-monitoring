@@ -35,6 +35,24 @@
                 "description": "Provide the name of the Management Group that will be used to host the connectivity resources."
             }
         },
+        "IdentityManagementGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the name of the Management Group that will be used to host the identity resources."
+            }
+        },
+        "managementManagementGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the name of the Management Group that will be used to host the management resources."
+            }
+        },
+        "LandingZoneManagementGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Provide the name of the Management Group that will be used to host the landing zone resources."
+            }
+        },
         "enableCAFMConnectivity": {
             "type": "string",
             "defaultValue": "Yes",
@@ -102,22 +120,43 @@
         "policyAssignmentParametersConnectivity": {
             "type": "object",
             "defaultValue": {}
+        },
+        "policyAssignmentParametersIdentity": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "policyAssignmentParametersLandingZone": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "policyAssignmentParametersManagement": {
+            "type": "object",
+            "defaultValue": {}
         }
     },
     "variables": {
          // Declaring the policy assignment parameters that will be used for all policy assignments
         "policyAssignmentParametersConnectivity": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersConnectivity'))]",
         "policyAssignmentParametersServiceHealth": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersServiceHealth'))]",
+        "policyAssignmentParametersIdentity": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersIdentity'))]",
+        "policyAssignmentParametersLandingZone": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersLandingZone'))]",
+        "policyAssignmentParametersManagement": "[union(parameters('policyAssignmentParametersCommon'), parameters('policyAssignmentParametersManagement'))]",
         "deploymentSuffix": "[concat('-', deployment().location, '-', guid(parameters('enterpriseScaleCompanyPrefix'), parameters('currentDateTimeUtcNow')))]",
         "deploymentUris": {
             "policyDefinitionsCAFM": "[uri(deployment().properties.templateLink.uri, 'policyDefinitions/policies.json')]",
             "CAFMConnectivityInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ConnectivityAssignment.json')]",
-            "CAFMServiceHealthInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ServiceHealthAssignment.json')]"
+            "CAFMServiceHealthInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ServiceHealthAssignment.json')]",
+            "CAFMIdentityInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-IdentityAssignment.json')]",
+            "CAFMLandingZoneInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-LandingZoneAssignment.json')]",
+            "CAFMManagementInitiative": "[uri(deployment().properties.templateLink.uri, 'policyAssignments/DINE-ManagementAssignment.json')]"
         },
         "deploymentNames": {
             "CAFMPolicyDeploymentName": "[take(concat('cafm-Policy', variables('deploymentSuffix')), 64)]",
             "CAFMConnectivityDeploymentName": "[take(concat('cafm-Connectivity', variables('deploymentSuffix')), 64)]",
-            "CAFMServiceHealthDeploymentName": "[take(concat('cafm-ServiceHealth', variables('deploymentSuffix')), 64)]"
+            "CAFMServiceHealthDeploymentName": "[take(concat('cafm-ServiceHealth', variables('deploymentSuffix')), 64)]",
+            "CAFMIdentityDeploymentName": "[take(concat('cafm-Identity', variables('deploymentSuffix')), 64)]",
+            "CAFMLandingZoneDeploymentName": "[take(concat('cafm-LandingZone', variables('deploymentSuffix')), 64)]",
+            "CAFMManagementDeploymentName": "[take(concat('cafm-Management', variables('deploymentSuffix')), 64)]",
         }
     },
     "resources": [
@@ -192,6 +231,87 @@
                     },
                     "policyAssignmentParameters": {
                         "value": "[variables('policyAssignmentParametersConnectivity')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning CAFM Identity PolicySet to the Indentity management group if condition is true
+            "condition": "[equals(parameters('enableCAFMIdentity'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMIdentityDeploymentName]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('identityManagementGroup'))]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "cafmPolicyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').CAFMIdentityInitiative]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "policyAssignmentParameters": {
+                        "value": "[variables('policyAssignmentParametersIdentity')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning CAFM LandingZone PolicySet to the LandingZone management group if condition is true
+            "condition": "[equals(parameters('enableCAFMLandingZone'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMLandingZoneDeploymentName]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('LandingZoneManagementGroup'))]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "cafmPolicyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').CAFMLandingZoneInitiative]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "policyAssignmentParameters": {
+                        "value": "[variables('policyAssignmentParametersLandingZone')]"
+                    }
+                }
+            }
+        },
+        {
+            // Assigning CAFM management PolicySet to the management management group if condition is true
+            "condition": "[equals(parameters('enableCAFMManagement'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "[variables('deploymentNames').CAFMManagementDeploymentName]",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('managementManagementGroup'))]",
+            "location": "[deployment().location]",
+            "dependsOn": [
+                "cafmPolicyCompletion"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').CAFMManagementInitiative]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "policyAssignmentParameters": {
+                        "value": "[variables('policyAssignmentParametersManagement')]"
                     }
                 }
             }
