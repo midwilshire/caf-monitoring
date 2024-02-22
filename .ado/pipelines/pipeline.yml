@@ -15,6 +15,7 @@ steps:
 
   - script: |
       git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
+      git status
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - script: |
