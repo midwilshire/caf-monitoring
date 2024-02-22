@@ -8,7 +8,24 @@ variables:
 pool:
   vmImage: windows-latest
 
-steps:         
+steps:
+
+  - checkout: self
+    persistCredentials: true
+
+  - script: |
+      git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - script: |
+      git checkout -b main
+      echo 'This is a test' > data.txt
+      git add -A
+      git commit -m "deployment $(Build.BuildNumber)"
+      git push --set-upstream origin main 
+    displayName: Add data.txt file
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
   - task: AzureFileCopy@3
     inputs:
       SourcePath: 'src/deploy/lz'
@@ -38,3 +55,6 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az storage blob delete-batch --source 'monitoring-buildartifacts' --account-name 'staarm' --pattern '*.*'
+  
+  - checkout: self
+    clean: true
