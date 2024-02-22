@@ -15,15 +15,15 @@ steps:
 
   - script: |
       git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
-      git status
+      ls -la
     workingDirectory: $(System.DefaultWorkingDirectory)
 
   - script: |
-      git checkout -b main
+      # git checkout -b main
       echo 'This is a test' > data.txt
-      git add -A
-      git commit -m "deployment $(Build.BuildNumber)"
-      git push --set-upstream origin main 
+      # git add -A
+      # git commit -m "deployment $(Build.BuildNumber)"
+      # git push --set-upstream origin main 
     displayName: Add data.txt file
     workingDirectory: $(System.DefaultWorkingDirectory)
 
