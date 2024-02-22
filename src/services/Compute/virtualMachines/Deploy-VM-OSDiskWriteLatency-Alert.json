@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "alertResourceGroupName": {
@@ -355,7 +355,7 @@
                             "name": "[[concat(subscription().displayName, '-VMLowOSDiskwriteLatencyAlert')]",
                             "location": "[[parameters('alertResourceGroupLocation')]",
                             "tags": {
-                              "_deployed_by_amba": true
+                              "_deployed_by_cafm": true
                             },
                             "properties": {
                               "displayName": "[[concat(subscription().displayName, '-VMLowOSDiskwriteLatencyAlert')]",

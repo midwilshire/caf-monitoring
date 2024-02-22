@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "enabled": {
@@ -45,7 +45,7 @@
         },
         "defaultValue": {
           "environment": "test",
-          "_deployed_by_amba": true
+          "_deployed_by_cafm": true
         }
       },
       "alertResourceGroupLocation": {
@@ -190,7 +190,7 @@
                             "name": "ActivityUDRUpdate",
                             "location": "global",
                             "tags": {
-                              "_deployed_by_amba": true
+                              "_deployed_by_cafm": true
                             },
                             "properties": {
                               "description": "Activity Log Route table update",

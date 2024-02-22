@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "severity": {
@@ -210,7 +210,7 @@
                     "name": "[[concat(parameters('resourceName'), '-VIPAvailabityAlert')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for Public IP Address VIP Availability",

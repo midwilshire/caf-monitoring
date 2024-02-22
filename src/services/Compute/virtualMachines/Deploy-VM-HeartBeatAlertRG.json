@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "severity": {
@@ -246,7 +246,7 @@
                     "name": "[[concat(resourceGroup().name, '-VMHeartBeatAlert')]",
                     "location": "[[resourceGroup().location]",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "displayName": "[[concat(resourceGroup().name, '-VMHeartBeatAlert')]",

@@ -206,7 +206,7 @@
                     "name": "[[concat(parameters('resourceName'), '-BgpAvailability')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for ExpressRoute Circuit Bgp Availability",

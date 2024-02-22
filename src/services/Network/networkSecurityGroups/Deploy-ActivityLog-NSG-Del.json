@@ -14,7 +14,7 @@
       "alzCloudEnvironments": [
         "AzureCloud"
       ],
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "enabled": {
@@ -35,7 +35,7 @@
           "displayName": "Resource Group Name",
           "description": "Resource group the alert is placed in"
         },
-        "defaultValue": "rg-amba-monitoring-001"
+        "defaultValue": "rg-cafm-monitoring-001"
       },
       "alertResourceGroupTags": {
         "type": "Object",
@@ -45,7 +45,7 @@
         },
         "defaultValue": {
           "environment": "test",
-          "_deployed_by_amba": true
+          "_deployed_by_cafm": true
         }
       },
       "alertResourceGroupLocation": {
@@ -190,7 +190,7 @@
                             "name": "ActivityNSGDelete",
                             "location": "global",
                             "tags": {
-                              "_deployed_by_amba": true
+                              "_deployed_by_cafm": true
                             },
                             "properties": {
                               "description": "Activity Log NSG Delete",

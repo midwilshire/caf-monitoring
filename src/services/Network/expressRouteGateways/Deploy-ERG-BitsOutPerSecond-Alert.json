@@ -206,7 +206,7 @@
                     "name": "[[concat(parameters('resourceName'), '-GatewayERBitsOutAlert')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for ER Gateway Connection BitsOutPerSecond",

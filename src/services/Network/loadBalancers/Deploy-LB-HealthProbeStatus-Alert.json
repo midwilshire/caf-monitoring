@@ -11,7 +11,7 @@
       "version": "1.0.1",
       "Category": "Networking",
       "source": "https://github.com/Azure/azure-monitor-baseline-alerts/",
-      "_deployed_by_amba": "True"
+      "_deployed_by_cafm": "True"
     },
     "parameters": {
       "severity": {
@@ -190,7 +190,7 @@
                     "name": "[[concat(parameters('resourceName'), '-ALBHealthProbeStatus')]",
                     "location": "global",
                     "tags": {
-                      "_deployed_by_amba": true
+                      "_deployed_by_cafm": true
                     },
                     "properties": {
                       "description": "Metric Alert for ALB Health Probe Status",
