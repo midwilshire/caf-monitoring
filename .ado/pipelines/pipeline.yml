@@ -16,7 +16,7 @@ steps:
   - script: |
       git config --global user.email pipeline@demo.com & git config --global user.name "Pipeline"
       ls -la
-    workingDirectory: $(System.DefaultWorkingDirectory)
+    workingDirectory: $(System.DefaultWorkingDirectory)\caf-monitoring
 
   - script: |
       # git checkout -b main
@@ -25,7 +25,7 @@ steps:
       # git commit -m "deployment $(Build.BuildNumber)"
       # git push --set-upstream origin main 
     displayName: Add data.txt file
-    workingDirectory: $(System.DefaultWorkingDirectory)
+    workingDirectory: $(System.DefaultWorkingDirectory)\caf-monitoring
 
   - task: AzureFileCopy@3
     inputs:
