@@ -32,7 +32,7 @@
         "policyAssignmentNames": {
             "cafmLandingZone": "Deploy-CAFM-LandingZone",
             "description": "Initiative to deploy CAFM alerts relevant to the ALZ LandingZone management group",
-            "displayName": "Deploy Azure Monitor Baseline Alerts for Landing Zone"
+            "displayName": "Deploy Azure Monitor Alerts for Landing Zone"
         },
         "nonComplianceMessage": {
             "message": "Alerting {enforcementMode} be deployed to Azure services.",

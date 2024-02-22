@@ -32,7 +32,7 @@
         "policyAssignmentNames": {
             "cafmIdentity": "Deploy-CAFM-Identity",
             "description": "Initiative to deploy CAFM alerts relevant to the ALZ Identity management group",
-            "displayName": "Deploy Azure Monitor Baseline Alerts for Identity"
+            "displayName": "Deploy Azure Monitor Alerts for Identity"
         },
         "nonComplianceMessage": {
             "message": "Alerting {enforcementMode} be deployed to Azure services.",
